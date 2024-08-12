@@ -1,8 +1,0 @@
-#!/bin/sh
-
-echo 'cpupower: Setting scaling governor'
-sudo cpupower frequency-set -g powersave
-echo 'cpupower: Setting minimum frequencies'
-sudo cpupower frequency-set -d 0.80GHz
-echo 'cpupower: Setting maximum frequencies'
-sudo cpupower frequency-set -u 4.00GHz

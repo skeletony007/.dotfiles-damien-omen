@@ -1,0 +1,28 @@
+#!/bin/sh
+
+# START AVOID X CRASH WITH XRASENGAN <https://wiki.archlinux.org/title/xrandr#Avoid_X_crash_with_xrasengan>
+declare -i count=2
+declare -i seconds=1
+
+while ((count)); do
+    xrandr >/dev/null
+    sleep $seconds
+    ((count--))
+done
+# END AVOID X CRASH WITH XRASENGAN
+
+# START TOGGLE EXTERNAL MONITOR (AND AUDIO) <https://wiki.archlinux.org/title/xrandr#Toggle_external_monitor>
+intern=eDP-1
+extern=DP-2
+
+if xrandr | grep "$extern disconnected"; then
+    xrandr --output "$extern" --off --output "$intern" --mode 1920x1080 --rate 60
+    xcalib -d :0 -s 0 -clear
+    wpctl set-mute @DEFAULT_AUDIO_SINK@ 1
+else
+    xrandr --output "$intern" --off --output "$extern" --mode 2560x1440 --rate 120
+    xcalib -d :0 -s 0 /usr/share/color/icc/samsung_c32g75t.icc
+    wpctl set-mute @DEFAULT_AUDIO_SINK@ 0
+    wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.40
+fi
+# END TOGGLE EXTERNAL MONITOR (AND AUDIO)

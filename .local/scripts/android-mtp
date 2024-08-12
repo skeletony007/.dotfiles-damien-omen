@@ -1,0 +1,20 @@
+#!/bin/env bash
+
+mkdir -p ~/mnt
+aft-mtp-mount ~/mnt
+
+dest="$HOME/Pictures/darktable"
+sources=(
+    "$HOME/mnt/Internal storage/DCIM/Camera"
+    "$HOME/mnt/Internal storage/DCIM/Camera/RAW"
+    "$HOME/mnt/Internal storage/DCIM/OpenCamera"
+)
+
+mkdir -p "$dest"
+
+for source in "${sources[@]}"
+do
+    find "$source" -type f \( -name *.jpg -o -name *.dng \) -exec mv {} "$dest" \;
+done
+
+fusermount -u ~/mnt
